@@ -11,7 +11,7 @@ class TareasController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('admin', ['except' => ['update']]);
+        $this->middleware('admin', ['except' => ['update', 'show']]);
     }
 
     
