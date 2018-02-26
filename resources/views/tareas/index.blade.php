@@ -39,6 +39,7 @@
   		@foreach($tareas as $tarea)
   			<tr id="{{$tarea->id}}" data-status="{{$tarea->status}}">
   				<td>{{$tarea->nombre}}</td>
+          <td style="display: none;" >{{$tarea->descripcion}}</td>
   				<td>{{$tarea->usuario->name}}</td>
   				<td style="display: none;">{{$tarea->user_id}}</td>
   				<td>{{$tarea->status}}</td>
@@ -215,7 +216,20 @@
     			'user_id': $('#usuarios :selected').val(),
     		},
     		success: function(data){
-    			
+    			$('tbody').append(
+            '<tr id="'+data.id+'">' + 
+            '<td>' + data.nombre + '</td>' +
+            '<td style="display: none;">' + data.descripcion + '</td>' +
+            '<td>' + $('#usuarios :selected').text() + '</td>' +
+            '<td>' + 'Pendiente' + '</td>' +
+            '<td>' + '<button id="edit" data-id="' +data.id+ '" type="button" class="btn btn-default" aria-label="Left Align">' +
+                            '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>' +
+                     '</button>' +
+                      '<button id="delete" type="button" class="btn btn-default" aria-label="Left Align">' +
+                            '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+                      '</button>' +
+            '</tr>'
+            )
     		}
     	})
 	})
@@ -225,7 +239,7 @@
     e.stopPropagation();
 		var row = $(this).closest('tr');
 		$('#name').val(row.find('td:eq(0)').text());
-		$('#descripcion').val(row.find('td:eq(1)').text());
+		$('#descripciont').val(row.find('td:eq(1)').text());
 		$('#usuarios option[value="'+ row.find('td:eq(2)').text() +'"]').attr('selected', 'selected');
 		$('#saveTask').attr('id', 'editTask');
 		$('#data-id').val($(this).data('id'));
@@ -249,7 +263,7 @@
     		success: function(data){
     			$('#' + data.id).find('td:eq(0)').text(data.nombre);	
     			$('#' + data.id).find('td:eq(1)').text(data.descripcion);
-    			$('#' + data.id).find('td:eq(2)').text(data.user_id);
+    			$('#' + data.id).find('td:eq(2)').text($('#usuarios :selected').text());
     			$('#taskModal').modal('hide');
     		}
     	})
