@@ -230,6 +230,7 @@
                       '</button>' +
             '</tr>'
             )
+           $('#taskModal').modal('hide');
     		}
     	})
 	})
